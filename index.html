@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Will You Be My Valentine?</title>
+<title>Will You Be My Valentinex, Ifemi?</title>
 <style>
 body {
     margin: 0;
-    overflow: hidden;
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     text-align: center;
     background: linear-gradient(135deg, #ff4e50, #f9d423, #ff6eb4, #ff69b4);
     color: white;
+    overflow: hidden;
 }
 
 h1 { margin-top: 40px; font-size: 36px; }
@@ -27,20 +27,18 @@ button {
     transition: all 0.3s ease;
 }
 
-#startBtn { background-color: #ff69b4; color: white; font-size: 22px; padding: 20px 40px; }
+#startBtn { 
+    background-color: #ff69b4; 
+    color: white; 
+    font-size: 22px; 
+    padding: 20px 40px; 
+    z-index: 1000; 
+}
 
 #yesBtn { background-color: #ff1493; display:none; color:white; }
 #noBtn { background-color: #c71585; display:none; color:white; }
 
-img { width: 150px; border-radius: 15px; margin: 20px; display:none; max-width: 40%; height: auto; }
-
-#funnyMessage {
-    position: absolute;
-    font-size: 24px;
-    font-weight: bold;
-    text-shadow: 2px 2px 8px #ff69b4;
-    pointer-events: none;
-}
+img { width: 150px; border-radius: 15px; margin: 20px; display:none; max-width: 40%; height:auto; }
 
 @media (max-width: 600px) {
     h1 { font-size: 28px; margin-top: 20px; }
@@ -49,7 +47,6 @@ img { width: 150px; border-radius: 15px; margin: 20px; display:none; max-width: 
 }
 </style>
 </head>
-
 <body>
 
 <h1>Will you be my Valentine, Ifemi? 💖</h1>
@@ -64,63 +61,72 @@ img { width: 150px; border-radius: 15px; margin: 20px; display:none; max-width: 
 <button id="yesBtn">YES 💕</button>
 <button id="noBtn">NO 💔</button>
 
-<div id="funnyMessage"></div>
-
 <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+// Elements
 const startBtn = document.getElementById("startBtn");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const music = document.getElementById("bgMusic");
-const funnyMessage = document.getElementById("funnyMessage");
 const yourPic = document.getElementById("yourPic");
 const herPic = document.getElementById("herPic");
 
+// Funny messages for NO button
 const lines = [
     "Please Ifemi… just accept 😏",
     "I know you love me, don't play with my heart 💔",
     "Even from Ghana, I can feel your vibes 🌍💖",
-    "No jollof is not an option."
     "Don't make me fly all the way from Nigeria to Ghana ✈️❤️",
+    "We are perfect for eachother 😅",
     "Just say yes before I start singing 🎶",
     "Don't break my heart, my life depends on you ❤️"
 ];
 
-// --- START BUTTON ---
+// START button
 startBtn.addEventListener("click", () => {
-    music.play().catch(e => console.log("Music blocked"));
-    startBtn.style.display = "none"; 
+    music.play().catch(e => console.log("Music blocked:", e));
+    startBtn.style.display = "none";
     yesBtn.style.display = "inline-block";
     noBtn.style.display = "inline-block";
     yourPic.style.display = "inline-block";
     herPic.style.display = "inline-block";
 });
 
-// --- NO BUTTON ---
+// NO button floating funny messages
 noBtn.addEventListener("click", () => {
     const line = lines[Math.floor(Math.random() * lines.length)];
+    const msg = document.createElement("div");
+    msg.innerText = line;
+    msg.style.position = "absolute";
+    msg.style.left = Math.random() * (window.innerWidth - 250) + "px";
+    msg.style.top = window.innerHeight + "px"; // start from bottom
+    msg.style.fontSize = (24 + Math.random() * 20) + "px";
+    msg.style.fontWeight = "bold";
+    msg.style.color = `hsl(${Math.random() * 360}, 100%, 75%)`;
+    msg.style.pointerEvents = "none";
+    msg.style.opacity = 1;
+    msg.style.textShadow = "2px 2px 8px #ff69b4";
+    document.body.appendChild(msg);
 
-    // Show message in random position
-    funnyMessage.innerText = line;
-    funnyMessage.style.left = Math.random() * (window.innerWidth - 200) + "px";
-    funnyMessage.style.top = Math.random() * (window.innerHeight - 50) + "px";
-    funnyMessage.style.opacity = 1;
-    funnyMessage.style.fontSize = (20 + Math.random() * 20) + "px";
-    funnyMessage.style.color = `hsl(${Math.random()*360}, 100%, 75%)`;
-
-    // Fade out
-    let fade = 1;
-    const fadeInterval = setInterval(() => {
-        fade -= 0.02;
-        funnyMessage.style.opacity = fade;
-        if (fade <= 0) clearInterval(fadeInterval);
-    }, 30);
+    // animate upwards and fade
+    let y = window.innerHeight;
+    let opacity = 1;
+    const floatInterval = setInterval(() => {
+        y -= 2 + Math.random() * 2;
+        opacity -= 0.01;
+        msg.style.top = y + "px";
+        msg.style.opacity = opacity;
+        if (opacity <= 0) {
+            clearInterval(floatInterval);
+            msg.remove();
+        }
+    }, 20);
 });
 
-// --- NO BUTTON WIGGLE ON HOVER ---
+// NO button wiggle on hover
 noBtn.addEventListener("mouseover", () => {
     const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
     const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -129,7 +135,7 @@ noBtn.addEventListener("mouseover", () => {
     noBtn.style.top = y + "px";
 });
 
-// --- YES BUTTON ---
+// YES button click -> fireworks + confetti
 yesBtn.addEventListener("click", () => {
     document.body.innerHTML = `
         <h1>💕 CONNECTION ESTABLISHED 💕</h1>
@@ -139,7 +145,7 @@ yesBtn.addEventListener("click", () => {
     startCelebration();
 });
 
-// --- FLOATING HEARTS ---
+// Floating hearts
 function createHeart() {
     const heart = document.createElement("div");
     heart.style.position = "absolute";
@@ -152,51 +158,51 @@ function createHeart() {
 }
 setInterval(createHeart, 300);
 
-// --- FIREWORKS + CONFETTI ---
+// Fireworks + Confetti
 function startCelebration() {
     const canvas = document.getElementById("celebration");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const ctx = canvas.getContext("2d");
 
-    function randomColor() { return `hsl(${Math.random() * 360}, 100%, 50%)`; }
+    function randomColor() { return `hsl(${Math.random()*360}, 100%, 50%)`; }
 
     // Fireworks
     for (let i = 0; i < 100; i++) {
         setTimeout(() => {
             ctx.beginPath();
             ctx.arc(
-                Math.random() * canvas.width,
-                Math.random() * canvas.height,
+                Math.random()*canvas.width,
+                Math.random()*canvas.height,
                 5,
-                0, 2 * Math.PI
+                0, 2*Math.PI
             );
             ctx.fillStyle = randomColor();
             ctx.fill();
-        }, i * 50);
+        }, i*50);
     }
 
     // Confetti
     const confetti = [];
-    for (let i = 0; i < 150; i++) {
+    for (let i=0;i<150;i++){
         confetti.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height - canvas.height,
-            r: Math.random() * 6 + 4,
-            d: Math.random() * 10 + 5,
+            x: Math.random()*canvas.width,
+            y: Math.random()*canvas.height - canvas.height,
+            r: Math.random()*6+4,
+            d: Math.random()*10+5,
             color: randomColor(),
-            tilt: Math.floor(Math.random() * 10) - 10
+            tilt: Math.floor(Math.random()*10)-10
         });
     }
 
-    function drawConfetti() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < confetti.length; i++) {
+    function drawConfetti(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for (let i=0;i<confetti.length;i++){
             const c = confetti[i];
             ctx.beginPath();
-            ctx.moveTo(c.x + c.tilt + c.r/2, c.y);
-            ctx.lineTo(c.x + c.tilt, c.y + c.r);
-            ctx.lineTo(c.x + c.tilt - c.r/2, c.y);
+            ctx.moveTo(c.x+c.tilt+c.r/2, c.y);
+            ctx.lineTo(c.x+c.tilt, c.y+c.r);
+            ctx.lineTo(c.x+c.tilt-c.r/2, c.y);
             ctx.closePath();
             ctx.fillStyle = c.color;
             ctx.fill();
@@ -204,21 +210,20 @@ function startCelebration() {
         updateConfetti();
     }
 
-    function updateConfetti() {
-        for (let i = 0; i < confetti.length; i++) {
+    function updateConfetti(){
+        for (let i=0;i<confetti.length;i++){
             const c = confetti[i];
-            c.y += Math.cos(0.01 + c.d) + 2 + c.r/2;
+            c.y += Math.cos(0.01+c.d)+2+c.r/2;
             c.x += Math.sin(0.01);
-            if (c.y > canvas.height) {
-                c.y = -10;
-                c.x = Math.random() * canvas.width;
+            if(c.y>canvas.height){
+                c.y=-10;
+                c.x=Math.random()*canvas.width;
             }
         }
     }
 
-    setInterval(drawConfetti, 30);
+    setInterval(drawConfetti,30);
 }
 </script>
-
 </body>
 </html>
