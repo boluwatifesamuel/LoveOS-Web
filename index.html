@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Will You Be My Valentine, IFEMI?</title>
+<title>Will You Be My Valentine?</title>
 <style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     text-align: center;
-    background: linear-gradient(135deg, #ff4e50, #f9d423, #ff6eb4, #ff69b4);
+    background: linear-gradient(135deg, #ff6eb4, #ffe4e1, #a2d5f2); /* pink, white, blue */
     color: white;
     overflow: hidden;
 }
@@ -63,7 +63,7 @@ input { padding: 10px; font-size: 18px; border-radius: 10px; border: none; margi
 </head>
 <body>
 
-<h1>Will you be my Valentine, IFEMI? 💖</h1>
+<h1>Will you be my Valentine, Ifemi? 💖</h1>
 
 <button id="startBtn">START 💖</button>
 
@@ -93,15 +93,15 @@ const lines = [
     "Please Ifemi… just accept 😏",
     "I know you love me, don't play with my heart 💔",
     "Even from Ghana, I can feel your vibes 🌍💖",
-    "No is not an option",
+    "No is not an option 😋🍲",
     "Don't make me fly all the way from Nigeria to Ghana ✈️❤️",
-    "I promise to make you happy 😅",
+    "I promise to be with you all my life ",
     "Just say yes before I start singing 🎶",
     "Don't break my heart, my life depends on you ❤️"
 ];
 
-// Mature Valentine colors
-const matureColors = ["#ff6b81","#ff4757","#d63031","#a29bfe","#6c5ce7","#ff9ff3","#f78fb3","#e84393"];
+// Mature Valentine colors: pink, white, soft blue
+const matureColors = ["#ff69b4", "#ffffff", "#a2d5f2"];
 
 // START button
 startBtn.addEventListener("click", () => {
@@ -114,7 +114,7 @@ startBtn.addEventListener("click", () => {
     herPic.style.display = "inline-block";
 });
 
-// NO button messages
+// NO button messages (fixed, floating, fade)
 noBtn.addEventListener("click", () => {
     const line = lines[Math.floor(Math.random()*lines.length)];
     const msg = document.createElement("div");
@@ -176,7 +176,7 @@ yesBtn.addEventListener("click", () => {
 function createHeart(){
     const heart = document.createElement("div");
     heart.style.position = "absolute";
-    heart.style.color = "#ff6b81";
+    heart.style.color = "#ff69b4";
     heart.style.fontSize = (Math.random()*30+20)+"px";
     heart.style.left = Math.random()*window.innerWidth + "px";
     heart.innerText = "❤️";
