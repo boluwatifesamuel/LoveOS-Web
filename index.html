@@ -2,38 +2,51 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Will You Be My Valentine, Ifemi?</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine?</title>
 <style>
 body {
     margin: 0;
     overflow: hidden;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     text-align: center;
-    background: linear-gradient(to right, #ff4e50, #fc913a);
+    background: linear-gradient(135deg, #ff4e50, #f9d423, #ff6eb4, #ff69b4);
     color: white;
 }
 
-h1 { margin-top: 50px; font-size: 40px; }
+h1 { margin-top: 40px; font-size: 36px; }
 
 button {
     padding: 15px 30px;
-    font-size: 20px;
+    font-size: 18px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    margin: 20px;
+    margin: 15px;
     position: relative;
     transition: all 0.3s ease;
 }
 
-#startBtn { background-color: #ffd700; }
+#startBtn { background-color: #ff69b4; color: white; font-size: 22px; padding: 20px 40px; }
 
-#yesBtn { background-color: #00ff88; display:none; }
-#noBtn { background-color: #ff0055; display:none; }
+#yesBtn { background-color: #ff1493; display:none; color:white; }
+#noBtn { background-color: #c71585; display:none; color:white; }
 
-img { width: 150px; border-radius: 15px; margin: 20px; display:none; }
+img { width: 150px; border-radius: 15px; margin: 20px; display:none; max-width: 40%; height: auto; }
 
-#funnyMessage { margin-top: 20px; font-size: 20px; min-height: 24px; }
+#funnyMessage {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px #ff69b4;
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    h1 { font-size: 28px; margin-top: 20px; }
+    button { font-size: 16px; padding: 12px 25px; }
+    img { width: 120px; }
+}
 </style>
 </head>
 
@@ -70,16 +83,15 @@ const lines = [
     "Please Ifemi… just accept 😏",
     "I know you love me, don't play with my heart 💔",
     "Even from Ghana, I can feel your vibes 🌍💖",
-    "No jollof is worth saying no 😋🍲",
-    "Don't make me fly all the way from Utah to Ghana ✈️❤️",
-    "I promise not to eat all the chin-chin 😅",
+    "No jollof is not an option."
+    "Don't make me fly all the way from Nigeria to Ghana ✈️❤️",
     "Just say yes before I start singing 🎶",
-    "Don't break my heart, my Netflix depends on you ❤️"
+    "Don't break my heart, my life depends on you ❤️"
 ];
 
-// START BUTTON CLICK
+// --- START BUTTON ---
 startBtn.addEventListener("click", () => {
-    music.play().catch(e => console.log("Music blocked, try again"));
+    music.play().catch(e => console.log("Music blocked"));
     startBtn.style.display = "none"; 
     yesBtn.style.display = "inline-block";
     noBtn.style.display = "inline-block";
@@ -87,12 +99,28 @@ startBtn.addEventListener("click", () => {
     herPic.style.display = "inline-block";
 });
 
-// NO button click -> funny messages
+// --- NO BUTTON ---
 noBtn.addEventListener("click", () => {
-    funnyMessage.innerText = lines[Math.floor(Math.random() * lines.length)];
+    const line = lines[Math.floor(Math.random() * lines.length)];
+
+    // Show message in random position
+    funnyMessage.innerText = line;
+    funnyMessage.style.left = Math.random() * (window.innerWidth - 200) + "px";
+    funnyMessage.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    funnyMessage.style.opacity = 1;
+    funnyMessage.style.fontSize = (20 + Math.random() * 20) + "px";
+    funnyMessage.style.color = `hsl(${Math.random()*360}, 100%, 75%)`;
+
+    // Fade out
+    let fade = 1;
+    const fadeInterval = setInterval(() => {
+        fade -= 0.02;
+        funnyMessage.style.opacity = fade;
+        if (fade <= 0) clearInterval(fadeInterval);
+    }, 30);
 });
 
-// NO button wiggle/dodge
+// --- NO BUTTON WIGGLE ON HOVER ---
 noBtn.addEventListener("mouseover", () => {
     const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
     const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -101,7 +129,7 @@ noBtn.addEventListener("mouseover", () => {
     noBtn.style.top = y + "px";
 });
 
-// YES button click -> fireworks + confetti
+// --- YES BUTTON ---
 yesBtn.addEventListener("click", () => {
     document.body.innerHTML = `
         <h1>💕 CONNECTION ESTABLISHED 💕</h1>
@@ -111,7 +139,7 @@ yesBtn.addEventListener("click", () => {
     startCelebration();
 });
 
-// Floating hearts
+// --- FLOATING HEARTS ---
 function createHeart() {
     const heart = document.createElement("div");
     heart.style.position = "absolute";
@@ -124,7 +152,7 @@ function createHeart() {
 }
 setInterval(createHeart, 300);
 
-// Fireworks + confetti
+// --- FIREWORKS + CONFETTI ---
 function startCelebration() {
     const canvas = document.getElementById("celebration");
     canvas.width = window.innerWidth;
