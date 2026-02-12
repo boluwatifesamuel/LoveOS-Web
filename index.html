@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Will You Be My Valentine, Ifemi?</title>
+<title>Will You Be My Valentine?</title>
 <style>
 body {
     margin: 0;
@@ -35,9 +35,9 @@ img { width: 150px; border-radius: 15px; margin: 20px; }
 
 <body>
 
-<h1>Will you be my Valentine, Ifemi? </h1> 💖</h1>
+<h1>Will you be my Valentine? 💖</h1>
 
-<img src="my-photo.jpg" alt="Your Picture">
+<img src="your-photo.jpg" alt="Your Picture">
 <img src="her-photo.jpg" alt="Her Picture">
 
 <br>
@@ -64,22 +64,25 @@ const lines = [
     "Even from Ghana, I can feel your vibes 🌍💖",
     "No jollof is worth saying no 😋🍲",
     "Don't make me fly all the way from Utah to Ghana ✈️❤️",
+    "I promise not to eat all the chin-chin 😅",
+    "Just say yes before I start singing 🎶",
+    "Don't break my heart, my Netflix depends on you ❤️"
 ];
 
-// Function to start music safely
-function startMusic() {
+// Start music on first click anywhere
+document.body.addEventListener("click", function startMusicOnce() {
     if (music.paused) music.play().catch(e => console.log(e));
-}
+    document.body.removeEventListener("click", startMusicOnce);
+});
 
 // NO button click -> show funny message
 noBtn.addEventListener("click", () => {
-    startMusic();
     funnyMessage.innerText = lines[Math.floor(Math.random() * lines.length)];
 });
 
 // YES button click -> fireworks + confetti
 yesBtn.addEventListener("click", () => {
-    startMusic();
+    if (music.paused) music.play();
     document.body.innerHTML = `
         <h1>💕 CONNECTION ESTABLISHED 💕</h1>
         <h2>You just upgraded my life to Premium Edition 😎❤️</h2>
@@ -171,5 +174,3 @@ function startCelebration() {
 
 </body>
 </html>
-
-
