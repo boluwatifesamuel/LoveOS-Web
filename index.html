@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Will You Be My Valentine, Ifemi?</title>
+<title>Will You Be My Valentine, IFEMI?</title>
 <style>
 body {
     margin: 0;
@@ -48,7 +48,7 @@ input { padding: 10px; font-size: 18px; border-radius: 10px; border: none; margi
     position: absolute;
     font-size: 24px;
     font-weight: bold;
-    text-shadow: 2px 2px 8px #ff69b4;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
     pointer-events: none;
     opacity: 0;
 }
@@ -63,7 +63,7 @@ input { padding: 10px; font-size: 18px; border-radius: 10px; border: none; margi
 </head>
 <body>
 
-<h1>Will you be my Valentine, Ifemi? 💖</h1>
+<h1>Will you be my Valentine, IFEMI? 💖</h1>
 
 <button id="startBtn">START 💖</button>
 
@@ -93,14 +93,19 @@ const lines = [
     "Please Ifemi… just accept 😏",
     "I know you love me, don't play with my heart 💔",
     "Even from Ghana, I can feel your vibes 🌍💖",
-    "No not an option",
+    "No is not an option",
     "Don't make me fly all the way from Nigeria to Ghana ✈️❤️",
+    "I promise to make you happy 😅",
     "Just say yes before I start singing 🎶",
     "Don't break my heart, my life depends on you ❤️"
 ];
 
+// Mature Valentine colors
+const matureColors = ["#ff6b81","#ff4757","#d63031","#a29bfe","#6c5ce7","#ff9ff3","#f78fb3","#e84393"];
+
 // START button
 startBtn.addEventListener("click", () => {
+    music.currentTime = 0;
     music.play().catch(e => console.log("Music blocked:", e));
     startBtn.style.display = "none";
     yesBtn.style.display = "inline-block";
@@ -109,55 +114,45 @@ startBtn.addEventListener("click", () => {
     herPic.style.display = "inline-block";
 });
 
-// NO button floating funny messages like hearts
+// NO button messages
 noBtn.addEventListener("click", () => {
-    const line = lines[Math.floor(Math.random() * lines.length)];
+    const line = lines[Math.floor(Math.random()*lines.length)];
     const msg = document.createElement("div");
     msg.innerText = line;
     msg.style.position = "absolute";
-    msg.style.left = Math.random() * (window.innerWidth - 250) + "px";
+    msg.style.left = Math.random()*(window.innerWidth-250) + "px";
     msg.style.top = window.innerHeight + "px";
-    msg.style.fontSize = (24 + Math.random()*20) + "px";
+    msg.style.fontSize = (22 + Math.random()*15) + "px";
     msg.style.fontWeight = "bold";
-    msg.style.color = `hsl(${Math.random()*360},100%,75%)`;
+    msg.style.color = matureColors[Math.floor(Math.random()*matureColors.length)];
     msg.style.pointerEvents = "none";
     msg.style.opacity = 1;
-    msg.style.transform = `rotate(${Math.random()*30-15}deg)`;
-    msg.style.textShadow = "2px 2px 8px #ff69b4";
+    msg.style.textShadow = "2px 2px 8px rgba(0,0,0,0.6)";
+    msg.style.transform = `rotate(${Math.random()*15-7}deg)`;
     document.body.appendChild(msg);
 
-    // Animate upwards and fade
     let y = window.innerHeight;
     let opacity = 1;
     const floatInterval = setInterval(() => {
         y -= 2 + Math.random()*2;
-        opacity -= 0.01;
+        opacity -= 0.008;
         msg.style.top = y + "px";
         msg.style.opacity = opacity;
-        if (opacity <= 0) {
+        if(opacity <= 0){
             clearInterval(floatInterval);
             msg.remove();
         }
     }, 20);
 });
 
-// NO wiggle on hover
-noBtn.addEventListener("mouseover", () => {
-    const x = Math.random()*(window.innerWidth-noBtn.offsetWidth);
-    const y = Math.random()*(window.innerHeight-noBtn.offsetHeight);
-    noBtn.style.position = "absolute";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-});
-
-// YES button click -> date questions
+// YES button
 yesBtn.addEventListener("click", () => {
     document.body.innerHTML = `
         <h1>💕 CONNECTION ESTABLISHED 💕</h1>
         <h2>Let's plan our date! 😎❤️</h2>
         <img src="date-image.jpg" alt="Cute Date Image" style="max-width:50%; border-radius:15px;">
         <div>
-            <label>Pick your favorite color: </label><input id="colorInput" type="text" placeholder="e.g., red">
+            <label>Pick your favorite color: </label><input id="colorInput" type="text" placeholder="e.g., soft pink">
         </div>
         <div>
             <label>What time should we start? </label><input id="timeInput" type="text" placeholder="e.g., 7 PM">
@@ -166,25 +161,22 @@ yesBtn.addEventListener("click", () => {
         <div id="thankYouMessage" style="margin-top:20px; font-size:24px; font-weight:bold;"></div>
         <canvas id="celebration"></canvas>
     `;
-
-    // Start fireworks/confetti/heart animation
     startCelebration();
 
-    // Handle submit
     const submitBtn = document.getElementById("submitBtn");
     submitBtn.addEventListener("click", () => {
-        const color = document.getElementById("colorInput").value || "pink";
+        const color = document.getElementById("colorInput").value || "soft pink";
         const time = document.getElementById("timeInput").value || "7 PM";
-        document.getElementById("thankYouMessage").innerHTML = 
+        document.getElementById("thankYouMessage").innerHTML =
             `Thanks for accepting! Your color is <span style="color:${color};">${color}</span> and we'll start at <strong>${time}</strong> 💖`;
     });
 });
 
 // Floating hearts
-function createHeart() {
+function createHeart(){
     const heart = document.createElement("div");
     heart.style.position = "absolute";
-    heart.style.color = "pink";
+    heart.style.color = "#ff6b81";
     heart.style.fontSize = (Math.random()*30+20)+"px";
     heart.style.left = Math.random()*window.innerWidth + "px";
     heart.innerText = "❤️";
@@ -193,14 +185,14 @@ function createHeart() {
 }
 setInterval(createHeart,300);
 
-// Fireworks + confetti
-function startCelebration() {
+// Fireworks & Confetti
+function startCelebration(){
     const canvas = document.getElementById("celebration");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const ctx = canvas.getContext("2d");
 
-    function randomColor(){ return `hsl(${Math.random()*360},100%,50%)`; }
+    function randomColor(){ return matureColors[Math.floor(Math.random()*matureColors.length)]; }
 
     // Fireworks
     for(let i=0;i<100;i++){
@@ -255,5 +247,6 @@ function startCelebration() {
     setInterval(drawConfetti,30);
 }
 </script>
+
 </body>
 </html>
